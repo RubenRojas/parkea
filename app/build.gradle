@@ -30,6 +30,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.google.code.gson:gson:2.3'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
+    compile 'me.dm7.barcodescanner:zxing:1.9'
 
 
 }

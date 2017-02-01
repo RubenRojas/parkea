@@ -8,24 +8,33 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="tiempoExedido_1" parent="Theme.AppCompat.Light">
+    <style name="blue_btn" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">#1565c0</item>
         <item name="colorButtonNormal">#2196f3</item>
     </style>
 
-    <style name="tiempoExedido_2" parent="Theme.AppCompat.Light">
+    <style name="green_btn" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">#00796b</item>
         <item name="colorButtonNormal">#009688</item>
     </style>
 
-    <style name="tiempoExedido_3" parent="Theme.AppCompat.Light">
+    <style name="red_btn" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">#d32f2f</item>
         <item name="colorButtonNormal">#f44336</item>
     </style>
 
-    <style name="botonRegistro" parent="Theme.AppCompat.Light">
+    <style name="yellow_btn" parent="Theme.AppCompat.Light">
         <item name="colorControlHighlight">@color/darkAccent</item>
         <item name="colorButtonNormal">@color/colorAccent</item>
     </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

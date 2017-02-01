@@ -1,5 +1,6 @@
 package cl.telios.parkea;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +13,21 @@ import android.util.Log;
 import cl.telios.parkea.Classes.Operador;
 import cl.telios.parkea.Helpers.AdminSQLiteOpenHelper;
 import cl.telios.parkea.Helpers.CheckNetwork;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Splash extends AppCompatActivity {
 
     SQLiteDatabase bd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/OpenSans-Regular.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
         getSupportActionBar().hide();
@@ -51,7 +61,7 @@ public class Splash extends AppCompatActivity {
                 final Intent mainIntent;
                 Log.d("Develop", String.valueOf(Operador.someoneLogued(bd)));
                 if(Operador.someoneLogued(bd)){
-                    mainIntent = new Intent(Splash.this, Dash.class);
+                    mainIntent = new Intent(Splash.this, Main.class);
                     mainIntent.putExtra("refer", "SPLASH");
                 }
                 else{
@@ -64,5 +74,10 @@ public class Splash extends AppCompatActivity {
 
             }
         }, 1500);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

@@ -22,7 +22,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "rut varchar(25), "+
                 "nombre varchar(25), "+
                 "pass varchar(25), "+
-                "id_parking varchar(25), "+
+                "id_parking varchar(25) "+
                 ")";
 
         db.execSQL(query);
@@ -35,7 +35,7 @@ public class AdminSQLiteOpenHelper extends SQLiteOpenHelper {
                 "rut varchar(25), "+
                 "nombre varchar(25), "+
                 "pass varchar(25), "+
-                "id_parking varchar(25), "+
+                "id_parking varchar(25) "+
                 ")";
 
         db.execSQL(query);

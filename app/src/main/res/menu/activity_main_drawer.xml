@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/prod_fecha"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Prod. Por Fecha" />
+        <item
+            android:id="@+id/espacios_ocupados"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Espacios Ocupados" />
+        <item
+            android:id="@+id/autorizados"
+            android:icon="@drawable/ic_menu_slideshow"
+            android:title="Moviles Autorizados" />
+
+    </group>
+
+
+</menu>
