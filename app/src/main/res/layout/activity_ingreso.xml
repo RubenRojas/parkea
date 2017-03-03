@@ -1,13 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_ingreso"
+    android:id="@+id/activity_login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:padding="10dp"
+    android:background="#fff"
+    android:orientation="vertical"
     tools:context="cl.telios.parkea.Ingreso">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:id="@+id/Login_logo"
+            android:src="@drawable/appicon" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:textAlignment="center"
+            android:text="Ingreso de Vehículo"
+            android:textSize="24dp"
+            android:layout_below="@+id/Login_logo"
+            android:layout_marginTop="15dp"
+            android:textColor="#333"
+            android:id="@+id/Login_titulo"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/datos_hora"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="#333"
+                android:textSize="18dp"
+                android:text="Hora Ingreso"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/hora"
+                android:textSize="22dp"
+                android:text=""
+                android:textColor="#333"
+                android:padding="5dp"
+                android:background="#F0F8FF"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/datos_ficha"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="#333"
+                android:textSize="18dp"
+                android:text="Ficha Ingreso"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/ficha"
+                android:textSize="22dp"
+                android:text="4563"
+                android:textColor="#333"
+                android:padding="5dp"
+                android:background="#F0F8FF"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="CONTINUAR"
+        android:id="@+id/continuar"
+        android:theme="@style/blue_btn"
+        android:textColor="#FFF"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+
+
+
 
 </RelativeLayout>
+
