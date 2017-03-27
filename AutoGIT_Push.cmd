@@ -14,5 +14,5 @@ git add .
 set /P palabra= Escriba un Mensaje de Commit: 
 git commit -m "%palabra% -- [%ldt%]"
 echo --- INICIANDO SUBIDA, ESPERE ---
-git push origin master
+git push origin francisco
 pause
