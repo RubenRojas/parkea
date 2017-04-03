@@ -97,8 +97,8 @@
                             android:text="Ocupados"
                             android:layout_height="wrap_content" />
                         <TextView
+                            android:id="@+id/ocupados"
                             android:layout_width="match_parent"
-                            android:text="51"
                             android:textColor="#333"
                             android:textSize="18dp"
                             android:padding="5dp"
@@ -116,8 +116,8 @@
                             android:text="Libres"
                             android:layout_height="wrap_content" />
                         <TextView
+                            android:id="@+id/libres"
                             android:layout_width="match_parent"
-                            android:text="49"
                             android:textColor="#333"
                             android:textSize="18dp"
                             android:padding="5dp"
@@ -143,8 +143,8 @@
                             android:text="Recaudado"
                             android:layout_height="wrap_content" />
                         <TextView
+                            android:id="@+id/recaudado"
                             android:layout_width="match_parent"
-                            android:text="$55,850"
                             android:textColor="#333"
                             android:textSize="18dp"
                             android:padding="5dp"
@@ -162,8 +162,8 @@
                             android:text="Autos Estacionados"
                             android:layout_height="wrap_content" />
                         <TextView
+                            android:id="@+id/autos_estacionados"
                             android:layout_width="match_parent"
-                            android:text="94"
                             android:textColor="#333"
                             android:textSize="18dp"
                             android:padding="5dp"
@@ -183,8 +183,8 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
-                android:text="CERRAR SESION"
-                android:id="@+id/cierre_sesion"
+                android:text="TERMINAR TURNO"
+                android:id="@+id/terminar_turno"
                 android:theme="@style/yellow_btn"
                 android:textColor="#FFF"
                 android:layout_alignParentBottom="true"

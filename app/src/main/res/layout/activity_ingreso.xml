@@ -69,7 +69,6 @@
                 android:layout_width="match_parent"
                 android:id="@+id/ficha"
                 android:textSize="22dp"
-                android:text="4563"
                 android:textColor="#333"
                 android:padding="5dp"
                 android:background="#F0F8FF"
@@ -81,8 +80,8 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="CONTINUAR"
-        android:id="@+id/continuar"
+        android:text="CONFIRMAR INGRESO"
+        android:id="@+id/confirmar"
         android:theme="@style/blue_btn"
         android:textColor="#FFF"
         android:layout_alignParentBottom="true"

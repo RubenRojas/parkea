@@ -20,8 +20,13 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import cl.telios.parkea.Classes.Operador;
+import cl.telios.parkea.Classes.Registro;
 import cl.telios.parkea.Helpers.AdminSQLiteOpenHelper;
 import cl.telios.parkea.Helpers.WebRequest;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
@@ -33,6 +38,9 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
     String destino = "";
     SQLiteDatabase bd;
     boolean auto_usado = false;
+    Operador op;
+    String msg = "Ha ocurrido un error.";
+
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
@@ -46,6 +54,7 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
         AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this,
                 "PARKEA", null, Integer.parseInt(getString(R.string.database_version)));
         bd = admin.getWritableDatabase();
+        op = Operador.getOperador(bd);
 
         destino = getIntent().getStringExtra("tipo").toString();
 
@@ -77,14 +86,12 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
         // Vibrate for 400 milliseconds
         v.vibrate(400);
         // Do something with the result here
-        Log.v("Develop", rawResult.getText()); // Prints scan results
-        Log.v("Develop", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
+        //Log.v("Develop", rawResult.getText()); // Prints scan results
+        //Log.v("Develop", rawResult.getBarcodeFormat().toString()); // Prints the scan format (qrcode, pdf417 etc.)
         String codigoMovil = rawResult.getText();
         codigo = codigoMovil;
-        ArrayList<String> passing = new ArrayList<String>();
-        passing.add(codigoMovil);
 
-        new setMovil().execute(passing);
+        new setMovil().execute(codigoMovil);
 
         // If you would like to resume scanning, call this method below:
         // resume();
@@ -137,8 +144,8 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
     }
 
 
-    private class setMovil extends AsyncTask<ArrayList<String>, Void, Void> {
-        String valido = "false";
+    private class setMovil extends AsyncTask<String, Void, Void> {
+        Registro reg;
         ProgressDialog pDialog;
         @Override
         protected void onPreExecute() {
@@ -146,56 +153,60 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
             // Showing progress dialog
             pDialog = new ProgressDialog(Scanner.this);
             pDialog.setMessage("Validando Código... ");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
             pDialog.setCancelable(false);
             pDialog.show();
         }
         @Override
-        protected Void doInBackground(ArrayList<String>... passing) {
+        protected Void doInBackground(String... passing) {
             //get data from view
-            ArrayList<String> passed = passing[0]; //get passed arraylist
             // Creating service handler class instance
             WebRequest webreq = new WebRequest();
 
-            /*
-            // Making a request to url and getting response
-            String URL = "http://telios.cl/quivolgo/mobile/getCodigo.php?codigo="+passed.get(0);
+            String URL;
+            if(destino.equals("ingreso")) {
+                // Making a request to url and getting response
+                URL = "http://pruebas.parkea.cl/parkea/android/validarIngreso.php?codigo=" + passing[0] + "&id_parking=" + op.getId_parking();
+            }else{
+                URL = "http://pruebas.parkea.cl/parkea/android/validarSalida.php?codigo=" + passing[0] + "&id_parking=" + op.getId_parking();
+            }
             Log.d("Develop", URL);
             //retorna un json con los datos de usuario(result: success) , sino, un json con un "result: no data";     <-- OJO A ESTO!!!
             String jsonStr = webreq.makeWebServiceCall(URL, WebRequest.GET);
 
             try {
-                valido = jsonStr;
+                reg = parseJSON(jsonStr);
             } catch (Exception e) {
                 e.printStackTrace();
-            }*/
-            valido = "true";
-
-
+            }
+            //valido = "true";
             return null;
         }
         @Override
         protected void onPostExecute(Void result) {
             pDialog.dismiss();
             super.onPostExecute(result);
-            if(valido.equals("true")){
-                Intent i;
-                if(destino.equals("ingreso")){
-                    i = new Intent(Scanner.this, Ingreso.class);
-                }
-                else{
-                    i = new Intent(Scanner.this, Salida.class);
-                }
+            if (reg != null) {
+                    Intent i;
+                    if (destino.equals("ingreso")) {
+                        i = new Intent(Scanner.this, Ingreso.class);
+                    } else {
+                        i = new Intent(Scanner.this, Salida.class);
+                        i.putExtra("hora_termino", reg.getHora_termino());
+                        i.putExtra("tiempo_total", reg.getTiempo_total());
+                        i.putExtra("valor", reg.getValor());
+                    }
 
-                i.putExtra("codigo", codigo);
-                startActivity(i);
-                Scanner.this.finish();
-
+                    i.putExtra("codigo", codigo);
+                    i.putExtra("hora_inicio", reg.getHora_inicio());
+                    startActivity(i);
+                    Scanner.this.finish();
             }
             else{
                 AlertDialog.Builder builder = new AlertDialog.Builder(Scanner.this);
                 builder.setTitle("Error");
                 builder.setIcon(R.drawable.appicon);
-                builder.setMessage(valido);
+                builder.setMessage(msg);
                 String positiveText = getString(android.R.string.ok);
                 builder.setPositiveButton(positiveText,
                         new DialogInterface.OnClickListener() {
@@ -213,4 +224,31 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
         }
     }
 
+    private Registro parseJSON(String json) throws JSONException {
+        if (json != null) {
+            JSONObject jsonObj = new JSONObject(json);
+            String result = jsonObj.getString("result"); //success o no-data
+            android.util.Log.d("Develop", "result->>" + result);
+            if (result.equals("success")) {
+                //android.util.Log.d("Develop", "result success");
+                Registro r = new Registro();
+                String tipo = jsonObj.getString("tipo"); //ingreso o salida
+                if(tipo.equals("ingreso")){
+                    r.setHora_inicio(jsonObj.getString("hora_inicio"));
+                }
+                else{
+                    r.setHora_inicio(jsonObj.getString("hora_inicio"));
+                    r.setHora_termino(jsonObj.getString("hora_termino"));
+                    r.setTiempo_total(jsonObj.getString("tiempo_total"));
+                    r.setValor(jsonObj.getString("valor"));
+                }
+                return r;
+            }
+            else{
+                msg = jsonObj.getString("mensaje");
+            }
+        }
+        return null;
+    }
 }
+
