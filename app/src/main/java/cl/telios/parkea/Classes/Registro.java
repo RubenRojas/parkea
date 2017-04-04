@@ -5,11 +5,15 @@ package cl.telios.parkea.Classes;
  */
 
 public class Registro {
+    private String fecha;
     private String hora_inicio;
     private String hora_termino;
     private String tiempo_total;
     private String valor;
     private String id_parking_espacio;
+    private String etiqueta;
+    private String patente;
+    private String tiempo_parcial;
 
     public Registro() {}
 
@@ -51,5 +55,37 @@ public class Registro {
 
     public void setTiempo_total(String tiempo_total) {
         this.tiempo_total = tiempo_total;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
+    }
+
+    public String getEtiqueta() {
+        return etiqueta;
+    }
+
+    public void setEtiqueta(String etiqueta) {
+        this.etiqueta = etiqueta;
+    }
+
+    public String getPatente() {
+        return patente;
+    }
+
+    public void setPatente(String patente) {
+        this.patente = patente;
+    }
+
+    public String getTiempo_parcial() {
+        return tiempo_parcial;
+    }
+
+    public void setTiempo_parcial(String tiempo_parcial) {
+        this.tiempo_parcial = tiempo_parcial;
     }
 }

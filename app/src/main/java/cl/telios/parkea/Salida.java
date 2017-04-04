@@ -25,8 +25,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class Salida extends AppCompatActivity {
-    Button salida;
-    TextView ficha, hora_ingreso, hora_salida, tiempo_total, valor;
+    Button salida, cancelar;
+    TextView ficha, hora_ingreso, hora_salida, tiempo_total, valor, fecha;
     String msg;
     Operador op;
     SQLiteDatabase bd;;
@@ -48,13 +48,16 @@ public class Salida extends AppCompatActivity {
         op = Operador.getOperador(bd);
 
         ficha = (TextView) findViewById(R.id.ficha);
-        ficha.setText(getIntent().getStringExtra("codigo"));
+        ficha.setText(getIntent().getStringExtra("ficha"));
 
         hora_ingreso = (TextView) findViewById(R.id.hora_ingreso);
         hora_ingreso.setText(getIntent().getStringExtra("hora_inicio"));
 
         hora_salida = (TextView) findViewById(R.id.hora_salida);
         hora_salida.setText(getIntent().getStringExtra("hora_termino"));
+
+        fecha = (TextView) findViewById(R.id.fecha);
+        fecha.setText(getIntent().getStringExtra("fecha"));
 
         tiempo_total = (TextView) findViewById(R.id.tiempo_total);
         tiempo_total.setText(getIntent().getStringExtra("tiempo_total"));
@@ -66,7 +69,34 @@ public class Salida extends AppCompatActivity {
         salida.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SalidaVehiculo().execute(getIntent().getStringExtra("codigo"),op.getId_parking(), getIntent().getStringExtra("hora_termino"));
+                new SalidaVehiculo().execute(getIntent().getStringExtra("codigo"),op.getId_parking(), getIntent().getStringExtra("hora_termino"), (String)tiempo_total.getText(), op.getId_turno());
+            }
+        });
+
+        cancelar = (Button) findViewById(R.id.cancelar);
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Salida.this);
+                alertDialogBuilder.setMessage("¿Desea cancelar la salida?");
+                alertDialogBuilder.setPositiveButton("Si",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Intent intent = new Intent(Salida.this, Main.class);
+                                startActivity(intent);
+                                Salida.this.finish();
+                            }
+                        });
+
+                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
     }
@@ -89,7 +119,7 @@ public class Salida extends AppCompatActivity {
         protected Void doInBackground(String... params) {
             WebRequest webreq = new WebRequest();
             // Making a request to url and getting response
-            String URL = "http://pruebas.parkea.cl/parkea/android/salidaVehiculo.php?codigo="+params[0]+"&id_parking="+params[1]+"&hora_termino="+params[2];
+            String URL = "http://pruebas.parkea.cl/parkea/android/salidaVehiculo.php?codigo="+params[0]+"&id_parking="+params[1]+"&hora_termino="+params[2]+"&tiempo_total="+params[3]+"&id_turno="+params[4];
             android.util.Log.d("Develop", URL);
             //retorna un json con los datos de usuario(result: success) , sino, un json con un "result: no data";     <-- OJO A ESTO!!!
             String jsonStr = webreq.makeWebServiceCall(URL, WebRequest.GET);

@@ -32,6 +32,48 @@
             android:layout_height="wrap_content" />
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:id="@+id/datos_ficha"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="#333"
+                android:textSize="15dp"
+                android:text="Ficha: "
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/ficha"
+                android:textSize="18dp"
+                android:textColor="#333"
+                android:padding="5dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/datos_fecha"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:textColor="#333"
+                android:textSize="18dp"
+                android:text="Fecha"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/fecha"
+                android:textSize="20dp"
+                android:textColor="#333"
+                android:padding="5dp"
+                android:background="#F0F8FF"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/datos_hora"
             android:layout_marginTop="15dp"
@@ -42,51 +84,77 @@
                 android:textColor="#333"
                 android:textSize="18dp"
                 android:text="Hora Ingreso"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
             <TextView
                 android:layout_width="match_parent"
                 android:id="@+id/hora"
-                android:textSize="22dp"
-                android:text=""
+                android:textSize="30dp"
                 android:textColor="#333"
                 android:padding="5dp"
                 android:background="#F0F8FF"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textAlignment="center" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:id="@+id/datos_ficha"
-            android:layout_marginTop="25dp"
-            android:orientation="vertical"
+            android:id="@+id/datos_patente"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
             android:layout_height="wrap_content">
             <TextView
                 android:layout_width="match_parent"
+                android:layout_weight="1"
                 android:textColor="#333"
                 android:textSize="18dp"
-                android:text="Ficha Ingreso"
+                android:text="Patente (opcional):"
                 android:layout_height="wrap_content" />
-            <TextView
+            <EditText
                 android:layout_width="match_parent"
-                android:id="@+id/ficha"
-                android:textSize="22dp"
+                android:inputType="text"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:layout_weight="1"
+                android:id="@+id/patente"
+                android:textSize="20dp"
                 android:textColor="#333"
                 android:padding="5dp"
                 android:background="#F0F8FF"
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-
     </LinearLayout>
-    <Button
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="CONFIRMAR INGRESO"
-        android:id="@+id/confirmar"
-        android:theme="@style/blue_btn"
-        android:textColor="#FFF"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="CANCELAR"
+            android:id="@+id/cancelar"
+            android:theme="@style/red_btn"
+            android:textColor="#FFF" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_weight="1"
+            android:text="CONFIRMAR INGRESO"
+            android:id="@+id/confirmar"
+            android:theme="@style/blue_btn"
+            android:textColor="#FFF" />
+
+    </LinearLayout>
+
+
 
 
 

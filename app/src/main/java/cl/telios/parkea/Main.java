@@ -31,8 +31,8 @@ import cl.telios.parkea.Helpers.WebRequest;
 
 public class Main extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    Button ingreso, salida, terminar_turno;
-    TextView ocupados, libres, recaudado, autos_estacionados;
+    Button ingreso, salida, terminar_turno, ver_ocupados;
+    TextView ocupados, libres, recaudado, autos_estacionados, nombreOperador, rutOperador;
     SQLiteDatabase bd;
     Operador op;
 
@@ -52,6 +52,7 @@ public class Main extends AppCompatActivity
         toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View header = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
 
 
@@ -61,6 +62,11 @@ public class Main extends AppCompatActivity
 
         op = Operador.getOperador(bd);
         android.util.Log.d("Develop","operador->" + op.toString());
+
+        nombreOperador = (TextView)header.findViewById(R.id.nombreOperador);
+        nombreOperador.setText(op.getNombre());
+        rutOperador = (TextView)header.findViewById(R.id.rutOperador);
+        rutOperador.setText(op.getRut());
 
         ocupados = (TextView) findViewById(R.id.ocupados);
         libres = (TextView) findViewById(R.id.libres);
@@ -83,6 +89,15 @@ public class Main extends AppCompatActivity
             public void onClick(View v) {
                 Intent i = new Intent(Main.this, Scanner.class);
                 i.putExtra("tipo", "salida");
+                startActivity(i);
+            }
+        });
+
+        ver_ocupados = (Button) findViewById(R.id.ver_ocupados);
+        ver_ocupados.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Main.this, ListadoOcupados.class);
                 startActivity(i);
             }
         });

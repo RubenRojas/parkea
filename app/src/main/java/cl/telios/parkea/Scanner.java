@@ -170,7 +170,7 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
             }else{
                 URL = "http://pruebas.parkea.cl/parkea/android/validarSalida.php?codigo=" + passing[0] + "&id_parking=" + op.getId_parking();
             }
-            Log.d("Develop", URL);
+            android.util.Log.d("Develop", URL);
             //retorna un json con los datos de usuario(result: success) , sino, un json con un "result: no data";     <-- OJO A ESTO!!!
             String jsonStr = webreq.makeWebServiceCall(URL, WebRequest.GET);
 
@@ -199,6 +199,9 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
 
                     i.putExtra("codigo", codigo);
                     i.putExtra("hora_inicio", reg.getHora_inicio());
+                    i.putExtra("fecha", reg.getFecha());
+                    i.putExtra("ficha", reg.getEtiqueta());
+                    android.util.Log.d("Develop", "fecha en scanner->>" + reg.getFecha());
                     startActivity(i);
                     Scanner.this.finish();
             }
@@ -233,10 +236,10 @@ public class Scanner extends Activity implements ZXingScannerView.ResultHandler 
                 //android.util.Log.d("Develop", "result success");
                 Registro r = new Registro();
                 String tipo = jsonObj.getString("tipo"); //ingreso o salida
-                if(tipo.equals("ingreso")){
-                    r.setHora_inicio(jsonObj.getString("hora_inicio"));
-                }
-                else{
+                r.setHora_inicio(jsonObj.getString("hora_inicio"));
+                r.setFecha(jsonObj.getString("fecha"));
+                r.setEtiqueta(jsonObj.getString("ficha"));
+                if(tipo.equals("salida")){
                     r.setHora_inicio(jsonObj.getString("hora_inicio"));
                     r.setHora_termino(jsonObj.getString("hora_termino"));
                     r.setTiempo_total(jsonObj.getString("tiempo_total"));

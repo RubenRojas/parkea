@@ -35,8 +35,9 @@ import static cl.telios.parkea.R.id.start;
 import static cl.telios.parkea.R.id.textView;
 
 public class Ingreso extends AppCompatActivity {
-    TextView hora, ficha;
-    Button confirmar;
+    TextView hora, ficha, fecha;
+    EditText patente;
+    Button confirmar, cancelar;
     Operador op;
     SQLiteDatabase bd;
     String msg;
@@ -57,26 +58,50 @@ public class Ingreso extends AppCompatActivity {
         bd = admin.getWritableDatabase();
         op = Operador.getOperador(bd);
 
+        ficha = (TextView) findViewById(R.id.ficha);
+        ficha.setText(getIntent().getStringExtra("ficha"));
+
+        fecha = (TextView)findViewById(R.id.fecha);
+        fecha.setText(getIntent().getStringExtra("fecha"));
+        android.util.Log.d("Develop", "fecha en intent->>" + getIntent().getStringExtra("fecha"));
+
         hora = (TextView) findViewById(R.id.hora);
         hora.setText(getIntent().getStringExtra("hora_inicio"));
-        /*String minutos = "";
-        if(new Date().getMinutes()<10){
-            minutos = "0"+String.valueOf(new Date().getMinutes());
-        }
-        else{
-            minutos = String.valueOf(new Date().getMinutes());
-        }
-        String horas = String.valueOf(new Date().getHours());
-        String currentDateTimeString = horas+":"+minutos;*/
 
-        ficha = (TextView) findViewById(R.id.ficha);
-        ficha.setText(getIntent().getStringExtra("codigo"));
+        patente = (EditText) findViewById(R.id.patente);
 
         confirmar = (Button)findViewById(R.id.confirmar);
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            new IngresoVehiculo().execute(getIntent().getStringExtra("codigo"),op.getId_parking(),op.getId_turno());
+            new IngresoVehiculo().execute(getIntent().getStringExtra("codigo"),op.getId_parking(), patente.getText().toString());
+            }
+        });
+
+        cancelar = (Button) findViewById(R.id.cancelar);
+        cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Ingreso.this);
+                alertDialogBuilder.setMessage("¿Desea cancelar el ingreso?");
+                alertDialogBuilder.setPositiveButton("Si",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Intent intent = new Intent(Ingreso.this, Main.class);
+                                startActivity(intent);
+                                Ingreso.this.finish();
+                            }
+                        });
+
+                alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //finish();
+                    }
+                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -100,7 +125,13 @@ public class Ingreso extends AppCompatActivity {
         protected Void doInBackground(String... params) {
             WebRequest webreq = new WebRequest();
             // Making a request to url and getting response
-            String URL = "http://pruebas.parkea.cl/parkea/android/ingresoVehiculo.php?codigo="+params[0]+"&id_parking="+params[1]+"&id_turno="+params[2];
+            android.util.Log.d("Develop","patente->"+params[2]);
+            String urlPatente = "";
+            if(!params[2].isEmpty()){
+                urlPatente = "&patente="+params[2];
+            }
+            String URL = "http://pruebas.parkea.cl/parkea/android/ingresoVehiculo.php?codigo="+params[0]+"&id_parking="+params[1];
+            URL += urlPatente;
             android.util.Log.d("Develop", URL);
             //retorna un json con los datos de usuario(result: success) , sino, un json con un "result: no data";     <-- OJO A ESTO!!!
             String jsonStr = webreq.makeWebServiceCall(URL, WebRequest.GET);
