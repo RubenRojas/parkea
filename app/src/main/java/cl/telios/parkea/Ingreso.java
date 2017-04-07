@@ -19,6 +19,8 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +40,7 @@ public class Ingreso extends AppCompatActivity {
     TextView hora, ficha, fecha;
     EditText patente;
     Button confirmar, cancelar;
+    MaterialSpinner tipos_vehiculo;
     Operador op;
     SQLiteDatabase bd;
     String msg;
@@ -67,6 +70,15 @@ public class Ingreso extends AppCompatActivity {
 
         hora = (TextView) findViewById(R.id.hora);
         hora.setText(getIntent().getStringExtra("hora_inicio"));
+
+        tipos_vehiculo = (MaterialSpinner) findViewById(R.id.tipo_vehiculo);
+        tipos_vehiculo.setItems("Auto", "Camión", "Motocicleta");
+        /*tipos_vehiculo.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+                Snackbar.make(view, "Clicked " + item, Snackbar.LENGTH_LONG).show();
+            }
+        });*/
 
         patente = (EditText) findViewById(R.id.patente);
 

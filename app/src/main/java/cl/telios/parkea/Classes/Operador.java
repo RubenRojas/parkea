@@ -16,8 +16,10 @@ public class Operador {
     public final String pass;
     public final String id_parking;
     public final String id_turno;
+    public final String rol;
+    public final String nombre_emp;
 
-    public Operador(String id, String id_emp, String rut, String nombre, String pass, String id_parking, String id_turno) {
+    public Operador(String id, String id_emp, String rut, String nombre, String pass, String id_parking, String id_turno, String rol, String nombre_emp) {
         this.id = id;
         this.id_emp = id_emp;
         this.rut = rut;
@@ -25,6 +27,8 @@ public class Operador {
         this.pass = pass;
         this.id_parking = id_parking;
         this.id_turno = id_turno;
+        this.rol = rol;
+        this.nombre_emp = nombre_emp;
     }
 
     public String getId() {
@@ -53,6 +57,12 @@ public class Operador {
 
     public String getId_turno() { return id_turno; }
 
+    public String getRol() { return rol; }
+
+    public String getNombre_emp() {
+        return nombre_emp;
+    }
+
     @Override
     public String toString() {
         return "Operador{" +
@@ -63,6 +73,8 @@ public class Operador {
                 ", pass='" + pass + '\'' +
                 ", id_parking='" + id_parking + '\'' +
                 ", id_turno='" + id_turno + '\'' +
+                ", rol='" + rol + '\'' +
+                ", nombre_emp='" + nombre_emp + '\'' +
                 '}';
     }
 
@@ -75,7 +87,7 @@ public class Operador {
         ////LogViewer.d("Develop", fila.getString(0));
         if (fila.moveToFirst()) {
             //LogViewer.d("Develop", fila.getString(0));
-            android.util.Log.d("Develop","operador logueado->"+fila.getString(0));
+            //android.util.Log.d("Develop","operador logueado->"+fila.getString(0));
             return true;
         }
         else{
@@ -92,6 +104,8 @@ public class Operador {
         registro.put("pass", this.pass);
         registro.put("id_parking", this.id_parking);
         registro.put("id_turno", this.id_turno);
+        registro.put("rol", this.rol);
+        registro.put("nombre_emp", this.nombre_emp);
         try{
             bd.insert("operador", null, registro);
             pass= true;
@@ -112,6 +126,8 @@ public class Operador {
         registro.put("pass", this.pass);
         registro.put("id_parking", this.id_parking);
         registro.put("id_turno", this.id_turno);
+        registro.put("rol", this.rol);
+        registro.put("nombre_emp", this.nombre_emp);
 
         try{
             bd.update("operador", registro,null, null);
@@ -134,13 +150,13 @@ public class Operador {
         return pass;
     }
     public static Operador getOperador(SQLiteDatabase bd) {
-        String query = "select id ,id_emp ,rut ,nombre ,pass ,id_parking, id_turno from operador limit 1";
+        String query = "select id ,id_emp ,rut ,nombre ,pass ,id_parking, id_turno, rol, nombre_emp from operador limit 1";
         Cursor fila = bd.rawQuery(query, null);
         Operador us;
         //android.util.Log.d("Develop","id fila->"+fila.getString(0));
         if (fila.moveToFirst()) {
             android.util.Log.d("Develop","retornando operador");
-            us = new Operador(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getString(4),fila.getString(5), fila.getString(6));
+            us = new Operador(fila.getString(0),fila.getString(1),fila.getString(2),fila.getString(3),fila.getString(4),fila.getString(5), fila.getString(6), fila.getString(7), fila.getString(8));
             return us;
         }
         else{

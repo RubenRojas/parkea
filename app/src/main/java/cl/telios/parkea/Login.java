@@ -115,10 +115,17 @@ public class Login extends AppCompatActivity {
                             }).create().show();
                 }else{
                     android.util.Log.d("Develop", "datos correctos");
-                    Intent i = new Intent(Login.this,Main.class);
-                    operador.insertOperador(bd);
-                    startActivity(i);
-                    Login.this.finish();
+                    Intent i;
+                    if(operador.getRol().equals("operador")){
+                        i = new Intent(Login.this, Main.class);
+                        operador.insertOperador(bd);
+                        startActivity(i);
+                        Login.this.finish();
+                    }
+                    else{
+                        Toast.makeText(Login.this, "Datos incorrectos.", Toast.LENGTH_LONG).show();
+                    }
+
                 }
             }
             catch (Exception e){
@@ -149,7 +156,7 @@ public class Login extends AppCompatActivity {
             if(result.equals("success")){
                 JSONObject datos_usuario = jsonObj.getJSONObject("datos_usuario");
                 android.util.Log.d("Develop", "result success");
-                Operador op = new Operador(datos_usuario.getString("id"),datos_usuario.getString("id_emp"), datos_usuario.getString("rut"), datos_usuario.getString("nombre"), datos_usuario.getString("pass"), datos_usuario.getString("id_parking"),datos_usuario.getString("id_turno"));
+                Operador op = new Operador(datos_usuario.getString("id"),datos_usuario.getString("id_emp"), datos_usuario.getString("rut"), datos_usuario.getString("nombre"), datos_usuario.getString("pass"), datos_usuario.getString("id_parking"),datos_usuario.getString("id_turno"), datos_usuario.getString("rol"), datos_usuario.getString("nombre_emp"));
                 android.util.Log.d("Develop", "op->"+op.toString());
                 return op;
             } else {

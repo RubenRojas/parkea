@@ -15,6 +15,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -27,6 +29,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 public class Salida extends AppCompatActivity {
     Button salida, cancelar;
     TextView ficha, hora_ingreso, hora_salida, tiempo_total, valor, fecha;
+    MaterialSpinner descuento;
     String msg;
     Operador op;
     SQLiteDatabase bd;;
@@ -64,6 +67,9 @@ public class Salida extends AppCompatActivity {
 
         valor = (TextView) findViewById(R.id.valor);
         valor.setText(getIntent().getStringExtra("valor"));
+
+        descuento = (MaterialSpinner) findViewById(R.id.descuento);
+        descuento.setItems("Promoción","Convenio","Cliente habitual");
 
         salida = (Button)findViewById(R.id.salida);
         salida.setOnClickListener(new View.OnClickListener() {

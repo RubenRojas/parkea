@@ -33,7 +33,7 @@
         <activity android:name=".Scanner" />
         <activity android:name=".Ingreso" />
         <activity android:name=".Salida" />
-        <activity android:name=".ListadoOcupados"></activity>
+        <activity android:name=".ListadoOcupados" />
     </application>
 
 </manifest>

@@ -61,6 +61,7 @@ public class Splash extends AppCompatActivity {
                 final Intent mainIntent;
                 Log.d("Develop", String.valueOf(Operador.someoneLogued(bd)));
                 if(Operador.someoneLogued(bd)){
+                    Operador op = Operador.getOperador(bd);
                     mainIntent = new Intent(Splash.this, Main.class);
                     mainIntent.putExtra("refer", "SPLASH");
                 }

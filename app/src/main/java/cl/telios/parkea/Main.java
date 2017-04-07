@@ -43,7 +43,14 @@ public class Main extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Pantalla Principal");
+        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this,
+                "PARKEA", null, Integer.parseInt(getString(R.string.database_version)));
+        bd = admin.getWritableDatabase();
+
+        op = Operador.getOperador(bd);
+        android.util.Log.d("Develop","operador->" + op.toString());
+
+        getSupportActionBar().setTitle(op.getNombre_emp());
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -54,14 +61,6 @@ public class Main extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View header = navigationView.getHeaderView(0);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        AdminSQLiteOpenHelper admin = new AdminSQLiteOpenHelper(this,
-                "PARKEA", null, Integer.parseInt(getString(R.string.database_version)));
-        bd = admin.getWritableDatabase();
-
-        op = Operador.getOperador(bd);
-        android.util.Log.d("Develop","operador->" + op.toString());
 
         nombreOperador = (TextView)header.findViewById(R.id.nombreOperador);
         nombreOperador.setText(op.getNombre());
