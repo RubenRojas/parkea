@@ -30,7 +30,7 @@
             android:text="Salida de Vehículo"
             android:textSize="24dp"
             android:layout_below="@+id/Login_logo"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:textColor="@color/blackText"
             android:id="@+id/Login_titulo"
             android:layout_height="wrap_content" />
@@ -165,22 +165,23 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_weight="50"
                 android:layout_marginTop="15dp"
                 android:orientation="vertical"
                 android:layout_height="wrap_content">
                 <TextView
                     android:layout_width="match_parent"
                     android:textColor="@color/blackText"
-                    android:textSize="18dp"
+                    android:textSize="19dp"
                     android:text="Valor a Pagar"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"/>
                 <TextView
                     android:layout_width="match_parent"
                     android:id="@+id/valor"
-                    android:textSize="30dp"
-                    android:textColor="@color/blackText"
+                    android:textSize="36dp"
+                    android:textColor="#fff"
+                    android:textStyle="bold"
+                    android:backgroundTint="@color/colorPrimary"
                     android:padding="5dp"
                     android:background="#F0F8FF"
                     android:layout_height="wrap_content"
@@ -190,21 +191,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:id="@+id/datos_descuento"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:orientation="horizontal"
-                android:layout_height="wrap_content">
-                <TextView
+                android:layout_height="wrap_content"
+                android:weightSum="100">
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_weight="2"
-                    android:textSize="18dp"
-                    android:text="Descuento"
-                    android:layout_height="wrap_content" />
-                <com.jaredrummler.materialspinner.MaterialSpinner
-                    android:id="@+id/descuento"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="20"
+                    android:orientation="vertical"
+                    android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:textSize="15dp"
+                            android:text="Descuento"
+                            android:layout_height="wrap_content" />
+                        <com.jaredrummler.materialspinner.MaterialSpinner
+                            android:id="@+id/descuento"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:ms_background_color="#F0F8FF"/>
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/camara"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    app:ms_background_color="#F0F8FF"/>
+                    android:layout_height="55dp"
+                    android:layout_weight="80"
+                    android:layout_marginTop="16dp"
+                    android:src="@drawable/ic_menu_camera"
+                    android:background="@color/colorPrimary"
+                    android:visibility="gone"/>
             </LinearLayout>
 
         </LinearLayout>

@@ -49,7 +49,7 @@
                     android:layout_height="90dp"
                     android:layout_weight="50"
                     android:text="INGRESO VEHICULO"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     android:id="@+id/ingreso"
                     android:theme="@style/blue_btn"
                     android:textColor="#FFF" />
@@ -59,7 +59,7 @@
                     android:layout_height="90dp"
                     android:layout_weight="50"
                     android:text="SALIDA VEHICULO"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     android:id="@+id/salida"
                     android:theme="@style/red_btn"
                     android:textColor="#FFF" />

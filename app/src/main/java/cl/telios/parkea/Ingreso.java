@@ -21,12 +21,15 @@ import android.widget.Toast;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import cl.telios.parkea.Classes.Operador;
+import cl.telios.parkea.Classes.TipoAuto;
 import cl.telios.parkea.Helpers.AdminSQLiteOpenHelper;
 import cl.telios.parkea.Helpers.WebRequest;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -72,7 +75,7 @@ public class Ingreso extends AppCompatActivity {
         hora.setText(getIntent().getStringExtra("hora_inicio"));
 
         tipos_vehiculo = (MaterialSpinner) findViewById(R.id.tipo_vehiculo);
-        tipos_vehiculo.setItems("Auto", "Camión", "Motocicleta");
+        //tipos_vehiculo.setItems("Auto", "Camión", "Motocicleta");
         /*tipos_vehiculo.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
@@ -86,7 +89,7 @@ public class Ingreso extends AppCompatActivity {
         confirmar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            new IngresoVehiculo().execute(getIntent().getStringExtra("codigo"),op.getId_parking(), patente.getText().toString());
+            new IngresoVehiculo().execute(getIntent().getStringExtra("codigo"),op.getId_parking(), patente.getText().toString(), tipos_vehiculo.getText().toString());
             }
         });
 
@@ -119,6 +122,97 @@ public class Ingreso extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new CargarTiposVehiculos().execute(op.getId_emp());
+    }
+
+    private class CargarTiposVehiculos extends AsyncTask<String, Void, Void> {
+        ArrayList<String> listadoTiposAuto;
+        ProgressDialog pDialog;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Showing progress dialog
+            pDialog = new ProgressDialog(Ingreso.this);
+            pDialog.setMessage("Cargando...");
+            pDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+        @Override
+        protected Void doInBackground(String... params) {
+            WebRequest webreq = new WebRequest();
+            // Making a request to url and getting response
+            String URL = "http://pruebas.parkea.cl/parkea/android/getTiposAuto.php?id_empresa="+params[0];
+            android.util.Log.d("Develop", URL);
+            //retorna un json con los datos de usuario(result: success) , sino, un json con un "result: no data";     <-- OJO A ESTO!!!
+            String jsonStr = webreq.makeWebServiceCall(URL, WebRequest.GET);
+            try {
+                listadoTiposAuto = tiposAutoJSON(jsonStr);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void result) {
+            super.onPostExecute(result);
+            try{
+                pDialog.dismiss();
+                if(listadoTiposAuto == null){
+                    //android.util.Log.d("Develop", "datos incorectos");
+                    new AlertDialog.Builder(Ingreso.this)
+                            .setTitle("Error")
+                            .setMessage("Ha ocurrido un error.")
+
+                            .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    //Login.this.finish();
+                                }
+                            }).create().show();
+                }else{
+                    if(listadoTiposAuto.isEmpty()){
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Ingreso.this);
+                        alertDialogBuilder.setMessage(msg);
+                        alertDialogBuilder.setPositiveButton("Aceptar",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface arg0, int arg1) {
+                                        Intent intent = new Intent(Ingreso.this, Main.class);
+                                        startActivity(intent);
+                                        Ingreso.this.finish();
+                                    }
+                                });
+                        AlertDialog alertDialog = alertDialogBuilder.create();
+                        alertDialog.show();
+                    }
+                    else{
+                        tipos_vehiculo.setItems(listadoTiposAuto);
+                    }
+                }
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                //android.util.Log.d("Develop", "exception");
+                //android.util.Log.d("Develop", e.getMessage());
+                new AlertDialog.Builder(Ingreso.this)
+                        .setTitle("Problema de Conexion")
+                        .setMessage("Hubo un problema al intentar conectarse a Internet.")
+
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                Ingreso.this.finish();
+                            }
+                        }).create().show();
+            }
+
+
+        }
+    }
+
     private class IngresoVehiculo extends AsyncTask<String, Void, Void> {
         String response;
         ProgressDialog pDialog;
@@ -142,7 +236,7 @@ public class Ingreso extends AppCompatActivity {
             if(!params[2].isEmpty()){
                 urlPatente = "&patente="+params[2];
             }
-            String URL = "http://pruebas.parkea.cl/parkea/android/ingresoVehiculo.php?codigo="+params[0]+"&id_parking="+params[1];
+            String URL = "http://pruebas.parkea.cl/parkea/android/ingresoVehiculo.php?codigo="+params[0]+"&id_parking="+params[1]+"&tipo_vehiculo="+params[3];
             URL += urlPatente;
             android.util.Log.d("Develop", URL);
             //retorna un json con los datos de usuario(result: success) , sino, un json con un "result: no data";     <-- OJO A ESTO!!!
@@ -218,6 +312,33 @@ public class Ingreso extends AppCompatActivity {
             return null;
         }
     }
+
+    private ArrayList<String> tiposAutoJSON(String json) throws JSONException {
+        ArrayList<String> listado = new ArrayList<String>();
+        if (json != null) {
+            JSONObject jsonObj = new JSONObject(json);
+            String result = jsonObj.getString("result"); //success o no-data
+            android.util.Log.d("Develop", "result->>"+result);
+            JSONArray r = jsonObj.getJSONArray("registros");
+            if(result.equals("success")){
+                for (int i = 0; i < r.length(); i++) {
+                    JSONObject emp = r.getJSONObject(i);
+                    String tmp = emp.getString("nombre");
+                    listado.add(tmp);
+                }
+
+            } else {
+                //android.util.Log.d("Develop", "result no-data");
+                msg = jsonObj.getString("mensaje");
+            }
+            return listado;
+        }
+        else{
+            //android.util.Log.d("Develop", "json null");
+            return null;
+        }
+    }
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
